@@ -21,36 +21,55 @@
 //Fifth:   composition of this program must be ONE FILE. So, there are no requirement about headding file.
 
 
-std::vector getSplitedArray(std::string material){
+class Settings{
+	public:
+	bool isShowRowNumber = true;
+};
+
+
+std::vector<std::string> getSplitedArray(std::string material){
 	char l;
 	std::string str;
 	std::vector<std::string> r_vec;
-	size_t long start_index = 0;
-	size_t long end_index = 0;
-	len = material.length();
-	for(size_t long i=0;i<len;i++){
+	long start_index = 0;
+	long end_index = 0;
+	long len = material.length();
+	for(long i=0;i<len;i++){
 		l = material[i];
-		if(l == ","){
+		if(l == ','){
 			end_index = i;
 			str = material.substr(start_index, end_index - start_index);
 			r_vec.push_back(str);
 			start_index = end_index + 1;
 		}
 	}
-	r_vec.push_back(r_vec.size())
+	r_vec.push_back(std::to_string(r_vec.size()));
 	return r_vec;
 }
 
 
-std::array getFileContentsAsTwoDimArray(std::string file_adress){
-	std::array<std::array<std::string>> main_field;
+//Implementation Note
+//I want to convert vector to array, however, it is difficult to predict size of array because user can add or remove element.
+//So I decided that array displaying contents consists of Array, and array containing elements consists of Vector.
+
+
+std::vector<std::vector<std::string>> getFileContents(std::string file_path){
+	std::vector<std::vector<std::string>> return_vec;
+
+	std::ifstream ifs(file_path);
 	std::string l;
-	std::ifstream ifs;
-	ifs.open(file_adress);
-	if(!ifs){
-		return main_field;
+	if(!ifs.fail()){
+		while(std::getline(ifs, l)){
+			return_vec.push_back(getSplitedArray(l));
+		}
 	}
-	while(getline(ifs, l)){
-		break;
-	}
+	return return_vec;
+}
+
+
+//FOLLOWING CODE IS FOR DEBUG
+
+
+int showTwoDimVector(std::vector<std::vector<std::string>>){
+
 }
